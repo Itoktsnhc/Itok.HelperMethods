@@ -9,12 +9,6 @@ namespace Itok.HelperMethods
 {
     public static class Extensions
     {
-        /// <summary>
-        ///     DeserializeJsonArrayFromStream
-        /// </summary>
-        /// <typeparam name="TReturn">ReturnType</typeparam>
-        /// <param name="stream">InputStream</param>
-        /// <returns></returns>
         public static IEnumerable<TReturn>
             DeserializeFromStream<TReturn>(this Stream stream) //streaming jObjectFrom JsonArray File.
         {
