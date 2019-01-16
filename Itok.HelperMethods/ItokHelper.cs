@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Itok.HelperMethods
 {
-    public static class CommonHelper
+    public static class ItokHelper
     {
         /// <summary>
         ///     CompareVersion
