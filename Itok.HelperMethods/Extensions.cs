@@ -37,5 +37,13 @@ namespace Itok.HelperMethods
         {
             return enumerable == null || !enumerable.Any();
         }
+
+        public static IEnumerable<List<T>> SplitListByCount<T>(this List<T> list, int nSize)
+        {
+            for (var i = 0; i < list.Count; i += nSize)
+            {
+                yield return list.GetRange(i, Math.Min(nSize, list.Count - i));
+            }
+        }
     }
 }
