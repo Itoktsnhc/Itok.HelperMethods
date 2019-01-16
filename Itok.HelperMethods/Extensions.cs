@@ -39,14 +39,15 @@ namespace Itok.HelperMethods
             for (var i = 0; i < list.Count; i += nSize) yield return list.GetRange(i, Math.Min(nSize, list.Count - i));
         }
 
-        public static IEnumerable<int> AllIndexesOf(this string str, string value)
+        public static IEnumerable<int> AllIndexesOf(this string str, string value,
+            StringComparison comparison = StringComparison.CurrentCultureIgnoreCase)
         {
             if (String.IsNullOrEmpty(value) || String.IsNullOrEmpty(str))
                 throw new ArgumentException("the string to find may not be empty", nameof(value));
 
-            for (var index = 0;; index += value.Length)
+            for (var index = 0; ; index += value.Length)
             {
-                index = str.IndexOf(value, index, StringComparison.CurrentCultureIgnoreCase);
+                index = str.IndexOf(value, index, comparison);
                 if (index == -1) break;
 
                 yield return index;
