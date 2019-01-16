@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itok.HelperMethods", "Itok.HelperMethods\Itok.HelperMethods.csproj", "{AD04E88E-D8E6-4A2C-8814-FFAF95262D9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itok.HelperMethods.Tests", "..\Itok.HelperMethods.Tests\Itok.HelperMethods.Tests.csproj", "{B89BFD7F-1051-4069-B5E5-143539C417CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD04E88E-D8E6-4A2C-8814-FFAF95262D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD04E88E-D8E6-4A2C-8814-FFAF95262D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD04E88E-D8E6-4A2C-8814-FFAF95262D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD04E88E-D8E6-4A2C-8814-FFAF95262D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89BFD7F-1051-4069-B5E5-143539C417CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89BFD7F-1051-4069-B5E5-143539C417CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89BFD7F-1051-4069-B5E5-143539C417CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89BFD7F-1051-4069-B5E5-143539C417CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9D74E4F7-61AE-4AFA-8FB8-529011B89183}
+	EndGlobalSection
+EndGlobal
