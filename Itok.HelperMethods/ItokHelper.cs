@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -121,6 +122,11 @@ namespace Itok.HelperMethods
             }
 
             Directory.CreateDirectory(dirPath);
+        }
+
+        public static TObj ConvertToObj<TObj>(string str)
+        {
+            return String.IsNullOrEmpty(str) ? default : JsonConvert.DeserializeObject<TObj>(str);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace Itok.HelperMethods.Tests
 {
@@ -121,5 +122,50 @@ namespace Itok.HelperMethods.Tests
                 Assert.IsInstanceOfType(e, typeof(ArgumentException));
             }
         }
+
+        [TestMethod]
+        public void TestStringConvertToObj1()
+        {
+            var str = @"";
+            var res = ItokHelper.ConvertToObj<ToDo>(str);
+            Assert.AreEqual(res, null);
+        }
+
+        [TestMethod]
+        public void TestStringConvertToObj2()
+        {
+            string str = null;
+            var res = ItokHelper.ConvertToObj<ToDo>(str);
+            Assert.AreEqual(res, null);
+        }
+
+        [TestMethod]
+        public void TestStringConvertToObj3()
+        {
+            var todo = new ToDo("This is Name", "This is Description");
+
+            var str = JsonConvert.SerializeObject(todo);
+            var res = ItokHelper.ConvertToObj<ToDo>(str);
+            Assert.AreEqual(res, todo);
+        }
+    }
+
+    public class ToDo
+    {
+        public ToDo(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ToDo todo ? todo.Name == Name && todo.Description == Description : false;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Name, Description);
     }
 }
