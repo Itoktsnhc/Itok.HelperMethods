@@ -74,7 +74,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestGetMd5()
         {
-            Assert.AreEqual(ItokHelper.GetMd5("abc"), "900150983CD24FB0D6963F7D28E17F72");
+            Assert.AreEqual("900150983CD24FB0D6963F7D28E17F72",ItokHelper.GetMd5("abc"));
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace Itok.HelperMethods.Tests
         {
             var str = @"";
             var res = ItokHelper.ConvertToObj<ToDo>(str);
-            Assert.AreEqual(res, null);
+            Assert.AreEqual(null, res);
         }
 
         [TestMethod]
@@ -136,7 +136,7 @@ namespace Itok.HelperMethods.Tests
         {
             string str = null;
             var res = ItokHelper.ConvertToObj<ToDo>(str);
-            Assert.AreEqual(res, null);
+            Assert.AreEqual(null, res);
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace Itok.HelperMethods.Tests
 
         public override bool Equals(object obj)
         {
-            return obj is ToDo todo ? todo.Name == Name && todo.Description == Description : false;
+            return obj is ToDo todo && todo.Name == Name && todo.Description == Description;
         }
 
         public override int GetHashCode() => HashCode.Combine(Name, Description);

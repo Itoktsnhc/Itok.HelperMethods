@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,10 @@ namespace Itok.HelperMethods.Tests
             using (var fs = File.OpenRead("sample.json"))
             {
                 var samples = fs.DeserializeFromStream<SampleClass>().ToList();
+                foreach (var sample in samples)
+                {
+                    Console.WriteLine(sample.Category);
+                }
             }
         }
 
