@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Itok.HelperMethods
 {
@@ -38,11 +38,12 @@ namespace Itok.HelperMethods
         }
 
 #pragma warning disable S4456 // Parameter validation in yielding methods should be wrapped
+
         public static IEnumerable<int> AllIndexesOf(this string str, string value,
 #pragma warning restore S4456 // Parameter validation in yielding methods should be wrapped
             StringComparison comparison = StringComparison.CurrentCultureIgnoreCase)
         {
-            if (String.IsNullOrEmpty(value) || String.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(str))
             {
                 throw new ArgumentException("the string to find may not be empty", nameof(value));
             }
@@ -50,11 +51,13 @@ namespace Itok.HelperMethods
             for (var index = 0; ; index += value.Length)
             {
                 index = str.IndexOf(value, index, comparison);
-                if (index == -1) break;
+                if (index == -1)
+                {
+                    break;
+                }
 
                 yield return index;
             }
         }
-
     }
 }

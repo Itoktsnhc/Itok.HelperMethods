@@ -103,10 +103,15 @@ namespace Itok.HelperMethods
 
         public static string UnZipFile(string zipFile, string targetFolder = null)
         {
-            if (!File.Exists(zipFile)) throw new FileNotFoundException();
+            if (!File.Exists(zipFile))
+            {
+                throw new FileNotFoundException();
+            }
 
             if (String.IsNullOrEmpty(targetFolder))
+            {
                 targetFolder = $@"{Path.GetDirectoryName(zipFile)}\{Path.GetFileNameWithoutExtension(zipFile)}";
+            }
 
             EnsureDirExist(targetFolder);
             var archive = ZipFile.Open(zipFile, ZipArchiveMode.Read);
@@ -119,9 +124,13 @@ namespace Itok.HelperMethods
             if (Directory.Exists(dirPath))
             {
                 if (deleteExisted)
+                {
                     Directory.Delete(dirPath, true);
+                }
                 else
+                {
                     return;
+                }
             }
 
             Directory.CreateDirectory(dirPath);
@@ -129,7 +138,7 @@ namespace Itok.HelperMethods
 
         public static TObj ConvertToObj<TObj>(string str)
         {
-            return String.IsNullOrEmpty(str) ? default : JsonConvert.DeserializeObject<TObj>(str);
+            return string.IsNullOrEmpty(str) ? default : JsonConvert.DeserializeObject<TObj>(str);
         }
     }
 }
