@@ -40,6 +40,14 @@ namespace Itok.HelperMethods.Tests
             var split = list.SplitListByCount(10);
             Assert.IsTrue(split.All(s => s.Count <= 10));
         }
+
+        [TestMethod]
+        public void TestGetDeterministicHashCode()
+        {
+            const string str = "Hello";
+            const int hashCodeValue = 60463434;
+            Assert.AreEqual(hashCodeValue, str.GetDeterministicHashCode());
+        }
     }
 
     public class SampleClass
