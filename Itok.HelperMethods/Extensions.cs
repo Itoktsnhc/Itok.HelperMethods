@@ -29,12 +29,15 @@ namespace Itok.HelperMethods
 
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
         {
-            return enumerable == null || !enumerable.Any();
+            return enumerable?.Any() != true;
         }
 
         public static IEnumerable<List<T>> SplitListByCount<T>(this List<T> list, int nSize)
         {
-            for (var i = 0; i < list.Count; i += nSize) yield return list.GetRange(i, Math.Min(nSize, list.Count - i));
+            for (var i = 0; i < list.Count; i += nSize)
+            {
+                yield return list.GetRange(i, Math.Min(nSize, list.Count - i));
+            }
         }
 
 #pragma warning disable S4456 // Parameter validation in yielding methods should be wrapped
@@ -48,15 +51,19 @@ namespace Itok.HelperMethods
                 throw new ArgumentException("the string to find may not be empty", nameof(value));
             }
 
-            for (var index = 0; ; index += value.Length)
+            return AllIndexesOfIterator();
+            IEnumerable<int> AllIndexesOfIterator()
             {
-                index = str.IndexOf(value, index, comparison);
-                if (index == -1)
+                for (var index = 0; ; index += value.Length)
                 {
-                    break;
-                }
+                    index = str.IndexOf(value, index, comparison);
+                    if (index == -1)
+                    {
+                        break;
+                    }
 
-                yield return index;
+                    yield return index;
+                }
             }
         }
 
@@ -72,7 +79,10 @@ namespace Itok.HelperMethods
                 {
                     hash1 = ((hash1 << 5) + hash1) ^ str[i];
                     if (i == str.Length - 1)
+                    {
                         break;
+                    }
+
                     hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
                 }
 

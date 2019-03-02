@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -29,7 +32,15 @@ namespace Itok.HelperMethods.Tests
         {
             // ReSharper disable once StringLiteralTypo
             const string str = "asdasdadsadad";
-            Assert.AreEqual(str, ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str)));
+            Assert.AreEqual(str, ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str, Encoding.UTF8)));
+        }
+
+        [TestMethod]
+        public void TestGZipStr2()
+        {
+            // ReSharper disable once StringLiteralTypo
+            const string str = "asdasdadsadad";
+            Assert.AreEqual(str, ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str, Encoding.ASCII), Encoding.ASCII));
         }
 
         [TestMethod]
@@ -56,7 +67,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestEnsureDirExist()
         {
-            var dir = "123";
+            const string dir = "123";
             Directory.CreateDirectory(dir);
             ItokHelper.EnsureDirExist(dir);
             ItokHelper.EnsureDirExist(dir, true);
@@ -66,7 +77,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestEnsureDirExist2()
         {
-            var dir = "1234";
+            const string dir = "1234";
             ItokHelper.EnsureDirExist(dir);
             Directory.Delete(dir);
         }
@@ -74,15 +85,15 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestGetMd5()
         {
-            Assert.AreEqual("900150983CD24FB0D6963F7D28E17F72",ItokHelper.GetMd5("abc"));
+            Assert.AreEqual("900150983CD24FB0D6963F7D28E17F72", ItokHelper.GetMd5("abc"));
         }
 
         [TestMethod]
         public void TestAllIndexesOf()
         {
-            var subStr = "abc";
+            const string subStr = "abc";
             // ReSharper disable once StringLiteralTypo
-            var originalString = "abcdsadavvzxcabc";
+            const string originalString = "abcdsadavvzxcabc";
             var result = originalString.AllIndexesOf(subStr).ToList();
             Assert.IsTrue(result.Count == 2 && result[0] == 0 && result[1] == 13);
         }
@@ -92,9 +103,9 @@ namespace Itok.HelperMethods.Tests
         {
             try
             {
-                string subStr = null;
+                const string subStr = null;
                 // ReSharper disable once StringLiteralTypo
-                var originalString = "abcdsadavvzxcabc";
+                const string originalString = "abcdsadavvzxcabc";
                 // ReSharper disable once ExpressionIsAlwaysNull
                 var list = originalString.AllIndexesOf(subStr).ToList();
                 Console.Write(list.Count);
@@ -110,9 +121,9 @@ namespace Itok.HelperMethods.Tests
         {
             try
             {
-                var subStr = "abc";
+                const string subStr = "abc";
                 // ReSharper disable once StringLiteralTypo
-                string originalString = null;
+                const string originalString = null;
                 // ReSharper disable once ExpressionIsAlwaysNull
                 var list = originalString.AllIndexesOf(subStr).ToList();
                 Console.Write(list.Count);
@@ -126,7 +137,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestStringConvertToObj1()
         {
-            var str = @"";
+            const string str = "";
             var res = ItokHelper.ConvertToObj<ToDo>(str);
             Assert.AreEqual(null, res);
         }
@@ -134,7 +145,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestStringConvertToObj2()
         {
-            string str = null;
+            const string str = null;
             var res = ItokHelper.ConvertToObj<ToDo>(str);
             Assert.AreEqual(null, res);
         }

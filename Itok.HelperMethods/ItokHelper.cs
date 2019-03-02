@@ -23,9 +23,15 @@ namespace Itok.HelperMethods
             var max = Math.Max(v1Array.Count, v2Array.Count);
             for (var i = 0; i < max; i++)
             {
-                if (v1Array.Count < i + 1) v1Array.Add("0");
+                if (v1Array.Count < i + 1)
+                {
+                    v1Array.Add("0");
+                }
 
-                if (v2Array.Count < i + 1) v2Array.Add("0");
+                if (v2Array.Count < i + 1)
+                {
+                    v2Array.Add("0");
+                }
             }
 
             var result = 0;
@@ -33,11 +39,20 @@ namespace Itok.HelperMethods
             {
                 var leftItem = Int32.Parse(v1Array[index]);
                 var rightItem = Int32.Parse(v2Array[index]);
-                if (leftItem < rightItem) result = -1;
+                if (leftItem < rightItem)
+                {
+                    result = -1;
+                }
 
-                if (leftItem > rightItem) result = 1;
+                if (leftItem > rightItem)
+                {
+                    result = 1;
+                }
 
-                if (result != 0) return result;
+                if (result != 0)
+                {
+                    return result;
+                }
             }
 
             return result;
@@ -50,16 +65,23 @@ namespace Itok.HelperMethods
                 var inputBytes = Encoding.UTF8.GetBytes(str);
                 var hashBytes = md5.ComputeHash(inputBytes);
                 var sb = new StringBuilder();
-                foreach (var b in hashBytes) sb.Append(b.ToString("X2"));
+                foreach (var b in hashBytes)
+                {
+                    sb.Append(b.ToString("X2"));
+                }
 
                 return sb.ToString();
             }
         }
 
-        public static string CompressGZipString(string input, Encoding encoding = null,
-            CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        public static string CompressGZipString(
+            string input,
+            Encoding encoding = null)
         {
-            if (encoding == null) encoding = Encoding.UTF8;
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
 
             var buffer = encoding.GetBytes(input);
             using (var memory = new MemoryStream())
@@ -76,7 +98,10 @@ namespace Itok.HelperMethods
 
         public static string DecompressGZipString(string input, Encoding encoding = null)
         {
-            if (encoding == null) encoding = Encoding.UTF8;
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
 
             var gZipBuffer = Convert.FromBase64String(input);
             using (var stream = new GZipStream(new MemoryStream(gZipBuffer),
