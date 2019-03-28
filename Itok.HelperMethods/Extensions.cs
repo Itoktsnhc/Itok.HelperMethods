@@ -40,10 +40,7 @@ namespace Itok.HelperMethods
             }
         }
 
-#pragma warning disable S4456 // Parameter validation in yielding methods should be wrapped
-
         public static IEnumerable<int> AllIndexesOf(this string str, string value,
-#pragma warning restore S4456 // Parameter validation in yielding methods should be wrapped
             StringComparison comparison = StringComparison.CurrentCultureIgnoreCase)
         {
             if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(str))

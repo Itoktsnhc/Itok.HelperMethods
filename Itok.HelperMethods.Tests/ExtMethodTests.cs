@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Itok.HelperMethods.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Itok.HelperMethods.Tests
@@ -48,6 +49,25 @@ namespace Itok.HelperMethods.Tests
             const int hashCodeValue = 60463434;
             Assert.AreEqual(hashCodeValue, str.GetDeterministicHashCode());
         }
+
+        [TestMethod]
+        public void TestCreateDataTable()
+        {
+            var data = Enumerable.Range(0, 1000).Select(i => new Person
+            {
+                Name = $"Name {i}",
+                Age = i,
+                Number = i % 2 == 0 ? default(int?) : 1
+            });
+            var dt = data.CreateDataTable(nameof(Person));
+        }
+    }
+
+    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public int? Number { get; set; }
     }
 
     public class SampleClass

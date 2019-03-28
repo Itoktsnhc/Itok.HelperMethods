@@ -74,9 +74,7 @@ namespace Itok.HelperMethods
             }
         }
 
-        public static string CompressGZipString(
-            string input,
-            Encoding encoding = null)
+        public static string CompressGZipString(string input, Encoding encoding = null)
         {
             if (encoding == null)
             {
