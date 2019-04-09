@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Itok.HelperMethods.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -61,6 +62,17 @@ namespace Itok.HelperMethods.Tests
             });
             var dt = data.CreateDataTable(nameof(Person));
         }
+
+        [TestMethod]
+        public void TestMapByPropName()
+        {
+            var objB = new ClassB()
+            {
+                Name = "This is A"
+            };
+            var objA = objB.MapByPropName<ClassB, ClassA>();
+            Assert.AreEqual(objB.Name, objA.Name);
+        }
     }
 
     public class Person
@@ -82,4 +94,17 @@ namespace Itok.HelperMethods.Tests
     {
         public int Id { get; set; }
     }
+
+    #region MapByPropTestClass
+    public class ClassA
+    {
+        public string Name { get; set; }
+        public int? Age { get; set; }
+    }
+
+    public class ClassB
+    {
+        public string Name { get; set; }
+    }
+    #endregion
 }

@@ -86,5 +86,20 @@ namespace Itok.HelperMethods
                 return hash1 + (hash2 * 1566083941);
             }
         }
+
+        public static TOutput MapByPropName<TIn, TOutput>(this TIn obj) where TOutput : new()
+        {
+            var inProps = obj.GetType().GetProperties();
+            var outputProps = typeof(TOutput).GetProperties().ToDictionary(s => s.Name);
+            var outputType = typeof(TOutput);
+            var inType = typeof(TIn);
+            var output = new TOutput();
+            foreach (var inProp in inProps)
+            {
+                outputProps.TryGetValue(inProp.Name, out var matchProp);
+                matchProp?.SetValue(output, inProp.GetValue(obj));
+            }
+            return output;
+        }
     }
 }
