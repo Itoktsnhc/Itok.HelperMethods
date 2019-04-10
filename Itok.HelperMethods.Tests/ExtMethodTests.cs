@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using Itok.HelperMethods.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,10 +16,7 @@ namespace Itok.HelperMethods.Tests
             using (var fs = File.OpenRead("sample.json"))
             {
                 var samples = fs.DeserializeFromStream<SampleClass>().ToList();
-                foreach (var sample in samples)
-                {
-                    Console.WriteLine(sample.Category);
-                }
+                foreach (var sample in samples) Console.WriteLine(sample.Category);
             }
         }
 
@@ -66,7 +62,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestMapByPropName()
         {
-            var objB = new ClassB()
+            var objB = new ClassB
             {
                 Name = "This is A"
             };
@@ -96,6 +92,7 @@ namespace Itok.HelperMethods.Tests
     }
 
     #region MapByPropTestClass
+
     public class ClassA
     {
         public string Name { get; set; }
@@ -106,5 +103,6 @@ namespace Itok.HelperMethods.Tests
     {
         public string Name { get; set; }
     }
+
     #endregion
 }

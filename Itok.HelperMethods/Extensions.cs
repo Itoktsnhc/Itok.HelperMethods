@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Itok.HelperMethods
 {
@@ -17,12 +17,8 @@ namespace Itok.HelperMethods
                 using (var reader = new JsonTextReader(sr))
                 {
                     while (reader.Read())
-                    {
                         if (reader.TokenType == JsonToken.StartObject)
-                        {
                             yield return JObject.Load(reader).ToObject<TReturn>();
-                        }
-                    }
                 }
             }
         }
@@ -34,30 +30,23 @@ namespace Itok.HelperMethods
 
         public static IEnumerable<List<T>> SplitListByCount<T>(this List<T> list, int nSize)
         {
-            for (var i = 0; i < list.Count; i += nSize)
-            {
-                yield return list.GetRange(i, Math.Min(nSize, list.Count - i));
-            }
+            for (var i = 0; i < list.Count; i += nSize) yield return list.GetRange(i, Math.Min(nSize, list.Count - i));
         }
 
         public static IEnumerable<int> AllIndexesOf(this string str, string value,
             StringComparison comparison = StringComparison.CurrentCultureIgnoreCase)
         {
-            if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(str))
-            {
+            if (String.IsNullOrEmpty(value) || String.IsNullOrEmpty(str))
                 throw new ArgumentException("the string to find may not be empty", nameof(value));
-            }
 
             return AllIndexesOfIterator();
+
             IEnumerable<int> AllIndexesOfIterator()
             {
-                for (var index = 0; ; index += value.Length)
+                for (var index = 0;; index += value.Length)
                 {
                     index = str.IndexOf(value, index, comparison);
-                    if (index == -1)
-                    {
-                        break;
-                    }
+                    if (index == -1) break;
 
                     yield return index;
                 }
@@ -69,21 +58,18 @@ namespace Itok.HelperMethods
         {
             unchecked
             {
-                int hash1 = 352654597;
-                int hash2 = hash1;
+                var hash1 = 352654597;
+                var hash2 = hash1;
 
-                for (int i = 0; i < str.Length; i += 2)
+                for (var i = 0; i < str.Length; i += 2)
                 {
                     hash1 = ((hash1 << 5) + hash1) ^ str[i];
-                    if (i == str.Length - 1)
-                    {
-                        break;
-                    }
+                    if (i == str.Length - 1) break;
 
                     hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
                 }
 
-                return hash1 + (hash2 * 1566083941);
+                return hash1 + hash2 * 1566083941;
             }
         }
 
@@ -91,14 +77,13 @@ namespace Itok.HelperMethods
         {
             var inProps = obj.GetType().GetProperties();
             var outputProps = typeof(TOutput).GetProperties().ToDictionary(s => s.Name);
-            var outputType = typeof(TOutput);
-            var inType = typeof(TIn);
             var output = new TOutput();
             foreach (var inProp in inProps)
             {
                 outputProps.TryGetValue(inProp.Name, out var matchProp);
                 matchProp?.SetValue(output, inProp.GetValue(obj));
             }
+
             return output;
         }
     }

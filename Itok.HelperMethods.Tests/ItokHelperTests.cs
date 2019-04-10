@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -40,7 +38,8 @@ namespace Itok.HelperMethods.Tests
         {
             // ReSharper disable once StringLiteralTypo
             const string str = "asdasdadsadad";
-            Assert.AreEqual(str, ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str, Encoding.ASCII), Encoding.ASCII));
+            Assert.AreEqual(str,
+                ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str, Encoding.ASCII), Encoding.ASCII));
         }
 
         [TestMethod]
@@ -177,6 +176,9 @@ namespace Itok.HelperMethods.Tests
             return obj is ToDo todo && todo.Name == Name && todo.Description == Description;
         }
 
-        public override int GetHashCode() => HashCode.Combine(Name, Description);
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Description);
+        }
     }
 }
