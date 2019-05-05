@@ -158,6 +158,13 @@ namespace Itok.HelperMethods.Tests
             var res = ItokHelper.ConvertToObj<ToDo>(str);
             Assert.AreEqual(res, todo);
         }
+
+        [TestMethod]
+        public void TestGetFileSizeWithProperUnit()
+        {
+            var fileSizeByUnit = ItokHelper.GetFileSizeWithProperUnit(484951096);
+            Assert.AreEqual("462.49MB", fileSizeByUnit);
+        }
     }
 
     public class ToDo
