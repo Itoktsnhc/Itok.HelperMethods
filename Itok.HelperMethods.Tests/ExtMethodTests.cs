@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Itok.HelperMethods.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Itok.HelperMethods.Tests
@@ -14,6 +16,7 @@ namespace Itok.HelperMethods.Tests
             using (var fs = File.OpenRead("sample.json"))
             {
                 var samples = fs.DeserializeFromStream<SampleClass>().ToList();
+                foreach (var sample in samples) Console.WriteLine(sample.Category);
             }
         }
 
@@ -35,6 +38,44 @@ namespace Itok.HelperMethods.Tests
             var split = list.SplitListByCount(10);
             Assert.IsTrue(split.All(s => s.Count <= 10));
         }
+
+        [TestMethod]
+        public void TestGetDeterministicHashCode()
+        {
+            const string str = "Hello";
+            const int hashCodeValue = 60463434;
+            Assert.AreEqual(hashCodeValue, str.GetDeterministicHashCode());
+        }
+
+        [TestMethod]
+        public void TestCreateDataTable()
+        {
+            var data = Enumerable.Range(0, 1000).Select(i => new Person
+            {
+                Name = $"Name {i}",
+                Age = i,
+                Number = i % 2 == 0 ? default(int?) : 1
+            });
+            var dt = data.CreateDataTable(nameof(Person));
+        }
+
+        [TestMethod]
+        public void TestMapByPropName()
+        {
+            var objB = new ClassB
+            {
+                Name = "This is A"
+            };
+            var objA = objB.MapByPropName<ClassB, ClassA>();
+            Assert.AreEqual(objB.Name, objA.Name);
+        }
+    }
+
+    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public int? Number { get; set; }
     }
 
     public class SampleClass
@@ -49,4 +90,19 @@ namespace Itok.HelperMethods.Tests
     {
         public int Id { get; set; }
     }
+
+    #region MapByPropTestClass
+
+    public class ClassA
+    {
+        public string Name { get; set; }
+        public int? Age { get; set; }
+    }
+
+    public class ClassB
+    {
+        public string Name { get; set; }
+    }
+
+    #endregion
 }

@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/Itoktsnhc/Itok.HelperMethods</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Itoktsnhc/Itok.HelperMethods</RepositoryUrl>
     <SignAssembly>false</SignAssembly>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Itok.HelperMethods
 {
@@ -22,9 +23,15 @@ namespace Itok.HelperMethods
             var max = Math.Max(v1Array.Count, v2Array.Count);
             for (var i = 0; i < max; i++)
             {
-                if (v1Array.Count < i + 1) v1Array.Add("0");
+                if (v1Array.Count < i + 1)
+                {
+                    v1Array.Add("0");
+                }
 
-                if (v2Array.Count < i + 1) v2Array.Add("0");
+                if (v2Array.Count < i + 1)
+                {
+                    v2Array.Add("0");
+                }
             }
 
             var result = 0;
@@ -32,11 +39,20 @@ namespace Itok.HelperMethods
             {
                 var leftItem = Int32.Parse(v1Array[index]);
                 var rightItem = Int32.Parse(v2Array[index]);
-                if (leftItem < rightItem) result = -1;
+                if (leftItem < rightItem)
+                {
+                    result = -1;
+                }
 
-                if (leftItem > rightItem) result = 1;
+                if (leftItem > rightItem)
+                {
+                    result = 1;
+                }
 
-                if (result != 0) return result;
+                if (result != 0)
+                {
+                    return result;
+                }
             }
 
             return result;
@@ -49,16 +65,21 @@ namespace Itok.HelperMethods
                 var inputBytes = Encoding.UTF8.GetBytes(str);
                 var hashBytes = md5.ComputeHash(inputBytes);
                 var sb = new StringBuilder();
-                foreach (var b in hashBytes) sb.Append(b.ToString("X2"));
+                foreach (var b in hashBytes)
+                {
+                    sb.Append(b.ToString("X2"));
+                }
 
                 return sb.ToString();
             }
         }
 
-        public static string CompressGZipString(string input, Encoding encoding = null,
-            CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        public static string CompressGZipString(string input, Encoding encoding = null)
         {
-            if (encoding == null) encoding = Encoding.UTF8;
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
 
             var buffer = encoding.GetBytes(input);
             using (var memory = new MemoryStream())
@@ -75,7 +96,10 @@ namespace Itok.HelperMethods
 
         public static string DecompressGZipString(string input, Encoding encoding = null)
         {
-            if (encoding == null) encoding = Encoding.UTF8;
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
 
             var gZipBuffer = Convert.FromBase64String(input);
             using (var stream = new GZipStream(new MemoryStream(gZipBuffer),
@@ -89,7 +113,10 @@ namespace Itok.HelperMethods
                     do
                     {
                         count = stream.Read(buffer, 0, size);
-                        if (count > 0) memory.Write(buffer, 0, count);
+                        if (count > 0)
+                        {
+                            memory.Write(buffer, 0, count);
+                        }
                     } while (count > 0);
 
                     return encoding.GetString(memory.ToArray());
@@ -99,10 +126,15 @@ namespace Itok.HelperMethods
 
         public static string UnZipFile(string zipFile, string targetFolder = null)
         {
-            if (!File.Exists(zipFile)) throw new FileNotFoundException();
+            if (!File.Exists(zipFile))
+            {
+                throw new FileNotFoundException();
+            }
 
             if (String.IsNullOrEmpty(targetFolder))
+            {
                 targetFolder = $@"{Path.GetDirectoryName(zipFile)}\{Path.GetFileNameWithoutExtension(zipFile)}";
+            }
 
             EnsureDirExist(targetFolder);
             var archive = ZipFile.Open(zipFile, ZipArchiveMode.Read);
@@ -115,12 +147,38 @@ namespace Itok.HelperMethods
             if (Directory.Exists(dirPath))
             {
                 if (deleteExisted)
+                {
                     Directory.Delete(dirPath, true);
+                }
                 else
+                {
                     return;
+                }
             }
 
             Directory.CreateDirectory(dirPath);
+        }
+
+        public static TObj ConvertToObj<TObj>(string str)
+        {
+            return String.IsNullOrEmpty(str) ? default : JsonConvert.DeserializeObject<TObj>(str);
+        }
+
+        public static string GetFileSizeWithProperUnit(long size, int precision = 2)
+        {
+            const double byteSize = 1024.00; //1KB
+
+            var powToUnit = new string[] { "B", "KB", "MB", "GB", "TB" };
+
+            for (int i = 0; i < powToUnit.Length; i++)
+            {
+                var pow = i + 1;
+                if (size < Math.Pow(byteSize, pow))
+                {
+                    return (size / Math.Pow(byteSize, i)).ToString($"f{precision}") + powToUnit[i];
+                }
+            }
+            return "OverflowSize";
         }
     }
 }

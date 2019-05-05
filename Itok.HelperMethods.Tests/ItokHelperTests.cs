@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace Itok.HelperMethods.Tests
 {
@@ -28,7 +30,16 @@ namespace Itok.HelperMethods.Tests
         {
             // ReSharper disable once StringLiteralTypo
             const string str = "asdasdadsadad";
-            Assert.AreEqual(str, ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str)));
+            Assert.AreEqual(str, ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str, Encoding.UTF8)));
+        }
+
+        [TestMethod]
+        public void TestGZipStr2()
+        {
+            // ReSharper disable once StringLiteralTypo
+            const string str = "asdasdadsadad";
+            Assert.AreEqual(str,
+                ItokHelper.DecompressGZipString(ItokHelper.CompressGZipString(str, Encoding.ASCII), Encoding.ASCII));
         }
 
         [TestMethod]
@@ -55,7 +66,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestEnsureDirExist()
         {
-            var dir = "123";
+            const string dir = "123";
             Directory.CreateDirectory(dir);
             ItokHelper.EnsureDirExist(dir);
             ItokHelper.EnsureDirExist(dir, true);
@@ -65,7 +76,7 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestEnsureDirExist2()
         {
-            var dir = "1234";
+            const string dir = "1234";
             ItokHelper.EnsureDirExist(dir);
             Directory.Delete(dir);
         }
@@ -73,15 +84,15 @@ namespace Itok.HelperMethods.Tests
         [TestMethod]
         public void TestGetMd5()
         {
-            Assert.AreEqual(ItokHelper.GetMd5("abc"), "900150983CD24FB0D6963F7D28E17F72");
+            Assert.AreEqual("900150983CD24FB0D6963F7D28E17F72", ItokHelper.GetMd5("abc"));
         }
 
         [TestMethod]
         public void TestAllIndexesOf()
         {
-            var subStr = "abc";
+            const string subStr = "abc";
             // ReSharper disable once StringLiteralTypo
-            var originalString = "abcdsadavvzxcabc";
+            const string originalString = "abcdsadavvzxcabc";
             var result = originalString.AllIndexesOf(subStr).ToList();
             Assert.IsTrue(result.Count == 2 && result[0] == 0 && result[1] == 13);
         }
@@ -91,9 +102,9 @@ namespace Itok.HelperMethods.Tests
         {
             try
             {
-                string subStr = null;
+                const string subStr = null;
                 // ReSharper disable once StringLiteralTypo
-                var originalString = "abcdsadavvzxcabc";
+                const string originalString = "abcdsadavvzxcabc";
                 // ReSharper disable once ExpressionIsAlwaysNull
                 var list = originalString.AllIndexesOf(subStr).ToList();
                 Console.Write(list.Count);
@@ -109,9 +120,9 @@ namespace Itok.HelperMethods.Tests
         {
             try
             {
-                var subStr = "abc";
+                const string subStr = "abc";
                 // ReSharper disable once StringLiteralTypo
-                string originalString = null;
+                const string originalString = null;
                 // ReSharper disable once ExpressionIsAlwaysNull
                 var list = originalString.AllIndexesOf(subStr).ToList();
                 Console.Write(list.Count);
@@ -120,6 +131,61 @@ namespace Itok.HelperMethods.Tests
             {
                 Assert.IsInstanceOfType(e, typeof(ArgumentException));
             }
+        }
+
+        [TestMethod]
+        public void TestStringConvertToObj1()
+        {
+            const string str = "";
+            var res = ItokHelper.ConvertToObj<ToDo>(str);
+            Assert.AreEqual(null, res);
+        }
+
+        [TestMethod]
+        public void TestStringConvertToObj2()
+        {
+            const string str = null;
+            var res = ItokHelper.ConvertToObj<ToDo>(str);
+            Assert.AreEqual(null, res);
+        }
+
+        [TestMethod]
+        public void TestStringConvertToObj3()
+        {
+            var todo = new ToDo("This is Name", "This is Description");
+
+            var str = JsonConvert.SerializeObject(todo);
+            var res = ItokHelper.ConvertToObj<ToDo>(str);
+            Assert.AreEqual(res, todo);
+        }
+
+        [TestMethod]
+        public void TestGetFileSizeWithProperUnit()
+        {
+            var fileSizeByUnit = ItokHelper.GetFileSizeWithProperUnit(484951096);
+            Assert.AreEqual("462.49MB", fileSizeByUnit);
+        }
+    }
+
+    public class ToDo
+    {
+        public ToDo(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ToDo todo && todo.Name == Name && todo.Description == Description;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Description);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Itok.HelperMethods
 
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
         {
-            return enumerable == null || !enumerable.Any();
+            return enumerable?.Any() != true;
         }
 
         public static IEnumerable<List<T>> SplitListByCount<T>(this List<T> list, int nSize)
@@ -39,13 +39,52 @@ namespace Itok.HelperMethods
             if (String.IsNullOrEmpty(value) || String.IsNullOrEmpty(str))
                 throw new ArgumentException("the string to find may not be empty", nameof(value));
 
-            for (var index = 0; ; index += value.Length)
-            {
-                index = str.IndexOf(value, index, comparison);
-                if (index == -1) break;
+            return AllIndexesOfIterator();
 
-                yield return index;
+            IEnumerable<int> AllIndexesOfIterator()
+            {
+                for (var index = 0;; index += value.Length)
+                {
+                    index = str.IndexOf(value, index, comparison);
+                    if (index == -1) break;
+
+                    yield return index;
+                }
             }
+        }
+
+        //https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/
+        public static int GetDeterministicHashCode(this string str)
+        {
+            unchecked
+            {
+                var hash1 = 352654597;
+                var hash2 = hash1;
+
+                for (var i = 0; i < str.Length; i += 2)
+                {
+                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
+                    if (i == str.Length - 1) break;
+
+                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
+                }
+
+                return hash1 + hash2 * 1566083941;
+            }
+        }
+
+        public static TOutput MapByPropName<TIn, TOutput>(this TIn obj) where TOutput : new()
+        {
+            var inProps = obj.GetType().GetProperties();
+            var outputProps = typeof(TOutput).GetProperties().ToDictionary(s => s.Name);
+            var output = new TOutput();
+            foreach (var inProp in inProps)
+            {
+                outputProps.TryGetValue(inProp.Name, out var matchProp);
+                matchProp?.SetValue(output, inProp.GetValue(obj));
+            }
+
+            return output;
         }
     }
 }
