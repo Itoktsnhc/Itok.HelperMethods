@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Itok.HelperMethods
 {
@@ -43,7 +44,7 @@ namespace Itok.HelperMethods
 
             IEnumerable<int> AllIndexesOfIterator()
             {
-                for (var index = 0;; index += value.Length)
+                for (var index = 0; ; index += value.Length)
                 {
                     index = str.IndexOf(value, index, comparison);
                     if (index == -1) break;
@@ -85,6 +86,14 @@ namespace Itok.HelperMethods
             }
 
             return output;
+        }
+
+        public static int GetObjectSize(this object obj)
+        {
+            var formater = new BinaryFormatter();
+            var ms = new MemoryStream();
+            formater.Serialize(ms, obj);
+            return ms.ToArray().Length;
         }
     }
 }

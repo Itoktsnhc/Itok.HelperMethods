@@ -165,8 +165,17 @@ namespace Itok.HelperMethods.Tests
             var fileSizeByUnit = ItokHelper.GetFileSizeWithProperUnit(484951096);
             Assert.AreEqual("462.49MB", fileSizeByUnit);
         }
+
+        [TestMethod]
+        public void TestGetObjSize()
+        {
+            var obj = new ToDo("name", "desc");
+            var size = obj.GetObjectSize();
+            Assert.AreEqual(219, size);
+        }
     }
 
+    [Serializable]
     public class ToDo
     {
         public ToDo(string name, string description)
